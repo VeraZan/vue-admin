@@ -26,3 +26,4 @@ export function validateVCode(value) {
   return reg.test(value)
 }
 
+//没有使用export default xxx; import时需要{}
