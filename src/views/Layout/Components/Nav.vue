@@ -60,7 +60,7 @@
     left: 0;
     width: $navMenu;
     height: 100vh;
-    background-color: #344a5f;
+    background-color: $secondColor;
     @include webkit(transition, all .3s ease 0s);
     .el-menu{
       border-right: 0;

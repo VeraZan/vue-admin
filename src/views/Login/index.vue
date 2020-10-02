@@ -301,7 +301,7 @@
 <style lang="scss" scoped>
   #login{
     height:100vh;
-    background-color: #344a5f;
+    background-color: $secondColor;
   }
   .login-wrap{
     width:330px;
