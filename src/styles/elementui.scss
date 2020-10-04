@@ -18,6 +18,9 @@ li.el-submenu{
   >.el-submenu__title:hover{
     background-color: rgba(0, 0, 0, 0.1) !important;
   }
+  .el-submenu__icon-arrow{
+    color: #fff !important;
+  }
 }
 .close {
   .el-submenu {

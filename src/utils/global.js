@@ -6,10 +6,10 @@ export function global() {
       cancelButtonText: '取消',
       type: params.type || 'warning',
       center: true
-    }).then(() => {
-      params.fn && params.fn(params.id);//params.fn存在的话才会走params.fn(params.id)
-    }).catch(() => {
-
+    }).then(() => {//确定
+      params.fn && params.fn(params.data || "");//params.fn存在的话才会走params.fn(params.id)
+    }).catch(() => {//取消
+      params.catchFn && params.catchFn();
     });
   };
   //调用此方法的组件可以监听return的数据的变化
