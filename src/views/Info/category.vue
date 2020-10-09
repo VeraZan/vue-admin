@@ -108,7 +108,7 @@
           category.item.push(response.data.data);
           resetFormAndBtn();
         }).catch(error => {
-          resetFormAndBtn();
+          submit_button_loading.value = false;
         })
       };
       //编辑一级分类
@@ -132,6 +132,8 @@
           let index = category.item.findIndex(item => item.id === category.current.id);
           category.item[index].category_name = form.categoryName;
           resetFormAndBtn();
+        }).catch(error => {
+          submit_button_loading.value = false;
         })
       };
       //添加子级分类
@@ -144,6 +146,7 @@
           root.$message.error("分类名称不能为空！");
           return false;
         }
+        submit_button_loading.value = true;
         let requestData = {
           categoryName: form.secCategoryName,
           parentId: category.current.id
@@ -157,6 +160,8 @@
           }
           category.item[index].children.push(responseData.data);
           resetFormAndBtn();
+        }).catch(error => {
+          submit_button_loading.value = false;
         })
       };
       //编辑二级分类
@@ -181,6 +186,8 @@
           let childrenIndex = category.item[index].children.findIndex(item => item.id === category.current.id);
           category.item[index].children[childrenIndex].category_name = form.secCategoryName;
           resetFormAndBtn();
+        }).catch(error => {
+          submit_button_loading.value = false;
         })
       };
       //重置
