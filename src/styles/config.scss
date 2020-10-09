@@ -6,6 +6,7 @@ $layoutHeader: 75px;
 
 // 主颜色
 $mainColor: #f56c6c;
+$secondColor: #344a5f;
 
 @mixin webkit($type, $value){
   -webkit-#{$type}: $value;
@@ -15,14 +16,17 @@ $mainColor: #f56c6c;
   #{$type}: $value;
 }
 
-@mixin labelDom($align, $width, $line-height: "normal"){
+@mixin labelDom($align, $width, $line-height: "normal",$padding-right:0){
   label {
     float: left;
     width: $width + px;
     text-align: $align;
     line-height: $line-height + px;
+    padding-right: $padding-right + px;
+    box-sizing: border-box;
   }
-  .warp-content {
+  .wrap-content {
     margin-left: $width + px;
+    display: flex;
   }
 }
