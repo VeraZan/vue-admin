@@ -9,7 +9,15 @@
       <el-input v-model="form.title"></el-input>
     </el-form-item>
     <el-form-item label="缩略图：" prop="imgUrl">
-
+        <el-upload
+                class="avatar-uploader"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+            <img v-if="form.imgUrl" :src="form.imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
     </el-form-item>
     <el-form-item label="发布日期：" prop="createDate">
       <el-date-picker v-model="form.createDate" type="date" placeholder="选择日期" :editable="false"></el-date-picker>
@@ -25,6 +33,7 @@
 
 <script>
   import { GetList,EditInfo } from "@/api/news";
+  import { QiniuToKen } from "@/api/common";
   import { timestampToTime } from "@/utils/common";
   import { reactive,onMounted } from "@vue/composition-api";
   import 'quill/dist/quill.core.css';
@@ -45,6 +54,9 @@
 
         },
         submitLoading:false,
+        uploadKey:{
+          token:""
+        },
         rules:{
           categoryId: [
             {required: true, message: '请选择类型', trigger: 'change'}
@@ -61,7 +73,8 @@
         categoryId:'',
         title:'',
         createDate:'',
-        content:''
+        content:'',
+        imgUrl:""
       });
       //获取分类
       const getInfoCategory = () => {
@@ -94,7 +107,8 @@
               id: data.id,
               categoryId: form.categoryId,
               title: form.title,
-              content: form.content
+              content: form.content,
+              imgUrl: form.imgUrl
             };
             data.submitLoading = true;
             EditInfo(requestData).then(response => {
@@ -106,19 +120,70 @@
           }
         })
       };
+      const handleAvatarSuccess = (res, file) => {
+        form.imgUrl = URL.createObjectURL(file.raw);
+      };
+      const beforeAvatarUpload = (file) => {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isJPG) {
+          root.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          root.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      };
+      const getQiniuToKen = () => {
+        let requestData={
+          accesskey: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
+          secretkey: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
+          buckety: "webjshtml"
+        };
+        QiniuToKen(requestData).then(response=>{
+            data.uploadKey.token = response.data.data.token;
+        })
+      };
       onMounted(()=>{
         getInfoCategory();
         getInfo();
+        getQiniuToKen();
       });
       return{
         data,
         form,
-        submit
+        submit,
+        handleAvatarSuccess,
+        beforeAvatarUpload
       }
     }
   }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+    .avatar-uploader{
+        .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            &:hover {
+                border-color: #409EFF;
+            }
+        }
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
 </style>
