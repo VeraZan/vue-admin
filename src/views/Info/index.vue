@@ -70,6 +70,7 @@
         <template slot-scope="scope">
           <el-button type="danger" size="mini" @click="deleteItem(scope.row.id)">删除</el-button>
           <el-button type="success" size="mini" @click="editItem(scope.row.id)">编辑</el-button>
+          <el-button type="warning" size="mini" @click="editDetail(scope.row.id)">编辑详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -169,6 +170,14 @@
         operateType.id=id;
         dialog_info.value = true;
       };
+      const editDetail = (id) => {
+        root.$router.push({
+          name: "infoDetailed",
+          params:{
+            id: id
+          }
+        })
+      };
       const deleteItem = (id) => {
         confirm({
           content:"确认删除此条信息？确认后将无法恢复！",
@@ -267,6 +276,7 @@
         handleSelectionChange,
         addItem,
         editItem,
+        editDetail,
         deleteItem,
         deleteAll,
         getList
