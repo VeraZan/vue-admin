@@ -49,13 +49,21 @@
           selection:true,
           tHead:[
             {label:"邮箱/用户名",field:"username",width:200},
-            {label:"真实姓名",field:"truename",width:120},
+            {label:"真实姓名",field:"truename",width:150},
             {label:"手机号",field:"phone",width:150},
-            {label:"地区",field:"region",width:200},
-            {label:"角色",field:"role",width:120},
-            {label:"禁启用状态",field:"status",columnType:"slot",slotName:"status",fixed:"right",width:120},
+            {label:"地区",field:"region",width:300},
+            {label:"角色",field:"role",width:150},
+            {label:"禁启用状态",field:"status",columnType:"slot",slotName:"status",fixed:"right",width:150},
             {label:"操作",columnType:"slot",slotName:"operation",fixed:"right",width:200},
-          ]
+          ],
+          requestData:{
+            url:"getUserList",
+            method:"post",
+            data:{
+              pageNumber: 1,
+              pageSize: 10
+            }
+          }
         }
       });
       return{

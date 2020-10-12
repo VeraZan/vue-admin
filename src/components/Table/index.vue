@@ -34,6 +34,8 @@
 
 <script>
   import { reactive,onBeforeMount } from "@vue/composition-api";
+  import { requestUrl } from "@/api/request";
+  import { loadTableData } from "@/api/common";
   export default {
     name: "TableVue",
     props:{
@@ -46,26 +48,39 @@
       const data= reactive({
         tableConfig:{
           selection:true,
-          tHead:[]
+          tHead:[],
+          requestData:{}
         },
-        tableData:[
-          {
-            truename:"张三",
-            phone:"18888888888",
-            status:true
-          }
-        ]
+        tableData:[]
       });
-      const initTableConfig=()=>{
+      let loadData = () => {
+        let requestJson = data.tableConfig.requestData;
+        let params = {
+          url:requestUrl[requestJson.url],
+          method:requestJson.method,
+          data:requestJson.data
+        };
+        loadTableData(params).then(response => {
+          let responseData = response.data.data.data;
+          if(responseData && responseData.length !== 0){
+            data.tableData = responseData;
+          }
+        }).catch(error => {
+
+        })
+      };
+      let initTableConfig=()=>{
         let configData = props.config;
+        let keys = Object.keys(data.tableConfig);
         for(let key in configData){
-          if(configData.hasOwnProperty(key) && data.tableConfig[key]){
+          if(configData.hasOwnProperty(key) && keys.includes(key)){
             data.tableConfig[key] = configData[key];
           }
         }
       };
       onBeforeMount(()=>{
         initTableConfig();
+        loadData();
       });
       return{
         data
