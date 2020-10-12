@@ -2,7 +2,7 @@
   <div id="login">
     <div class="login-wrap">
       <ul class="menu-tab">
-        <li v-for="(val,index) in menuTab" :key="index" :class="{'current':isActive === index}" @click="toggleMenu(index)">{{val}}</li>
+        <li v-for="(val,index) in menuTab.desc" :key="index" :class="{'current':isActive === index}" @click="toggleMenu(index)">{{val}}</li>
       </ul>
       <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" class="login-form" size="medium">
         <el-form-item prop="username" class="item-form"><!--此处el-form-item直接用label属性设置label的话，label在<style scoped>中的样式修改可能不生效-->
@@ -125,7 +125,9 @@
       //这里放置data数据，生命周期，自定义的函数
 
       /************************数据******************************/
-      const menuTab=reactive(['登录', '注册']);
+      const menuTab=reactive({
+        desc: ['登录', '注册']
+      });
       const isActive=ref(0);
       const loginBtnStatus = ref(true);
       const codeBtn = reactive({
