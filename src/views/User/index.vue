@@ -63,6 +63,10 @@
               pageNumber: 1,
               pageSize: 10
             }
+          },
+          pagination:{
+            show:true,
+            layout: "total, sizes, prev, pager, next, jumper"
           }
         }
       });

@@ -56,6 +56,9 @@ div.el-table {
     padding-right: 10px;
   }
 }
+.el-table__empty-block{
+  width:100% !important;
+}
 
 /* dialog 样式 */
 .el-dialog__body {
