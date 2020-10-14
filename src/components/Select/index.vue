@@ -1,10 +1,10 @@
 <template>
-    <el-select v-model="data.searchValue" placeholder="请选择" value="">
+    <el-select v-model="data.searchValue" placeholder="请选择" @change="select">
         <el-option
-                v-for="item in data.initOption"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+          v-for="item in data.initOption"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
         </el-option>
     </el-select>
 </template>
@@ -17,9 +17,13 @@
       config:{
         type:Object,
         default:()=>{}
+      },
+      selectData: {
+        type: Object,
+        default: () => {}
       }
     },
-    setup(props,{ root }){
+    setup(props,{ root,emit }){
       const data = reactive({
         searchValue:"",
         initOption:[],
@@ -27,10 +31,13 @@
           {value:"username",label:"邮箱"},
           {value:"truename",label:"姓名"},
           {value:"phone",label:"手机号"},
-          { value: "id", label: "ID"},
-          { value: "title", label: "标题"}
+          {value:"id",label: "ID"},
+          {value:"title",label: "标题"}
         ]
       });
+      /**
+       * 初始化下拉选择
+       */
       const initOption = () => {
         let initData=props.config.init;
         if(initData.length === 0){
@@ -49,11 +56,19 @@
         data.initOption = optionArr;
         data.searchValue = optionArr[0].value;
       };
+      /**
+       * 选择改变触发
+       */
+      const select = (val) => {
+        let filterData = data.option.filter(item => item.value == val)[0];
+        emit("update:selectData", filterData);
+      }
       onBeforeMount(()=>{
        initOption()
       });
       return{
-        data
+        data,
+        select
       }
     }
   }

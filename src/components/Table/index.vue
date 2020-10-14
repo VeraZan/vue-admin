@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="data.tableData" border style="width: 100%">
+    <el-table :data="data.tableData" border @selection-change="thatSelectCheckbox" style="width: 100%">
       <!--多选框-->
       <el-table-column v-if="data.tableConfig.selection" type="selection" width="45" fixed="left"></el-table-column>
       <template v-for="item in data.tableConfig.tHead">
@@ -29,19 +29,27 @@
         </el-table-column>
       </template>
     </el-table>
-    <el-pagination
-      class="pull-right"
-      v-if="data.tableConfig.pagination.show"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="pageData.currentPage"
-      :page-sizes="pageData.pageSizes"
-      :page-size="pageData.pageSize"
-      :layout="data.tableConfig.pagination.layout"
-      :total="pageData.total"
-      background
-    >
-    </el-pagination>
+    <div class="table-footer">
+      <el-row>
+        <el-col :span="4">
+          <slot name="tableFooterLeft"></slot>
+        </el-col>
+        <el-col :span="20">
+          <el-pagination
+            class="pull-right"
+            v-if="data.tableConfig.pagination.show"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageData.currentPage"
+            :page-sizes="pageData.pageSizes"
+            :page-size="pageData.pageSize"
+            :layout="data.tableConfig.pagination.layout"
+            :total="pageData.total"
+            background
+          ></el-pagination>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
@@ -54,6 +62,10 @@
     name: "TableVue",
     props:{
       config:{
+        type: Object,
+        default: () => {}
+      },
+      tableRow: {
         type: Object,
         default: () => {}
       }
@@ -84,7 +96,26 @@
           }
         }
       };
-      //watch(() => tableData.item,(newValue,oldValue) =>  data.tableData = newValue);
+      // 勾选checkbox时触发
+      const thatSelectCheckbox = (val) => {
+        let rowData = {
+          idItem: val.map(item => item.id)
+        }
+        emit("update:tableRow", rowData);
+      }
+      // 刷新数据
+      const refreshData = () => {
+        tableLoadData(data.tableConfig.requestData);
+      }
+      // 带参数刷新数据
+      const paramsLoadData = (params) => {
+        let requestData = Object.assign({}, params, {
+          pageNumber: 1,
+          pageSize: 10
+        })
+        data.tableConfig.requestData.data = requestData;
+        tableLoadData(data.tableConfig.requestData);
+      }
       //表格数据监听
       watch(
         [
@@ -117,12 +148,12 @@
       });
       return{
         data,pageData,
-        handleSizeChange,handleCurrentChange
+        handleSizeChange,handleCurrentChange,thatSelectCheckbox, refreshData, paramsLoadData
       }
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.table-footer { padding: 15px 0; }
 </style>
