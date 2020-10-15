@@ -70,7 +70,7 @@
         default: () => {}
       }
     },
-    setup(props,{ root }){
+    setup(props,{ root,emit }){
       //加载数据
       const { tableData,tableLoadData } = loadData();
       //分页
@@ -98,10 +98,7 @@
       };
       // 勾选checkbox时触发
       const thatSelectCheckbox = (val) => {
-        let rowData = {
-          idItem: val.map(item => item.id)
-        }
-        emit("update:tableRow", rowData);
+        emit("update:tableRow", {idItem: val.map(item => item.id)});
       }
       // 刷新数据
       const refreshData = () => {

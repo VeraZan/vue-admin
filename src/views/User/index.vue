@@ -127,7 +127,7 @@
       }
       //点击批量删除
       const handlerBatchDel = () => {
-        let userId = data.tableRow.idItem
+        let userId = data.tableRow.idItem;
         if(!userId || userId.length === 0) {
           root.$message.error("请勾选需要删除的用户！！");
           return false;
