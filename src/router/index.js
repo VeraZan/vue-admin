@@ -6,7 +6,8 @@ Vue.use(VueRouter);
 //引入布局组件
 import Layout from '@/views/Layout'
 
-const routes = [
+//默认路由
+export const defaultRouterMap  = [
   {
     path: "/",
     meta:{
@@ -45,11 +46,24 @@ const routes = [
         component: ()=>import("../views/Console/index.vue")
       }
     ]
-  },
+  }
+];
+
+const router = new VueRouter({
+  mode: 'hash',
+  scrollBehavior: () => ({ y: 0 }),//页面滚到顶部
+  routes: defaultRouterMap
+});
+
+export default router;
+
+//动态路由
+export const asnycRouterMap = [
   {
     path: "/info",
     name: "Info",
     meta:{
+      role: ['sale', 'manager'],
       name:"信息管理",
       icon:"info"
     },
@@ -60,6 +74,7 @@ const routes = [
         path: "/infoIndex",
         name: "InfoIndex",
         meta:{
+          role: ['sale', 'manager'],
           name:"信息列表"
         },
         hidden:false,
@@ -69,6 +84,7 @@ const routes = [
         path: "/infoCategory",
         name: "InfoCategory",
         meta:{
+          role: ['sale'],
           name:"信息分类"
         },
         hidden:false,
@@ -78,6 +94,7 @@ const routes = [
         path: "/infoDetailed/:id",
         name: "infoDetailed",
         meta:{
+          role: ['sale'],
           name:"信息详情"
         },
         hidden:true,
@@ -89,6 +106,7 @@ const routes = [
     path: "/user",
     name: "User",
     meta:{
+      role: ['sale'],
       name:"用户管理",
       icon:"user"
     },
@@ -99,6 +117,7 @@ const routes = [
         path: "/userIndex",
         name: "UserIndex",
         meta:{
+          role: ['sale'],
           name:"用户列表"
         },
         hidden:false,
@@ -107,9 +126,3 @@ const routes = [
     ]
   }
 ];
-
-const router = new VueRouter({
-  routes
-});
-
-export default router;
