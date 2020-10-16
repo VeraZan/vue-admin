@@ -1,5 +1,5 @@
 <template>
-   <el-dialog :title="editData.id ? '编辑':'新建'" :visible.sync="data.dialog_info_flag" @close="close" width="700px" @opened="openDialog">
+   <el-dialog :title="editData.id ? '编辑':'新建'" :visible.sync="data.dialog_info_flag" @close="close" width="700px" @open="openDialog">
     <el-form :model="data.form" :rules="data.rules" ref="userInfoForm">
       <el-form-item label="用户名：" :label-width="data.formLabelWidth" prop="username">
           <el-input v-model="data.form.username" placeholder="请输入邮箱" autocomplete="off"></el-input>
@@ -146,7 +146,7 @@ export default {
         })
       }
     }
-    /*弹窗打开，动画结束时*/
+    /*弹窗打开*/
     const openDialog = () => {
       // 角色请求
       getRole();
@@ -186,6 +186,15 @@ export default {
         // 表单验证通过
         if (valid) {
           // 数据处理
+          /**
+           * 深拷贝/深复制  JSON.parse(JSON.stringify(data.form))
+           * 浅拷贝/浅复制   Object.assign({}, data.form)   
+           浅复制只复制一层对象的属性，而深复制则递归复制了所有层级
+           注意：
+           如果var objects = [{ 'a': function(){} }, { 'b': undefined }, { 'c': Symbol() }];
+           使用JSON.parse(JSON.stringify(objects)) 的方式进行深拷贝时，a、b、c对应的value会丢失
+           使用lodash进行_.cloneDeep(objects)不会丢失
+           */       
           let requestData = Object.assign({}, data.form); //
           requestData.role = requestData.role.join();  // 数组转字符串，默认以，号隔开
           requestData.btnPerm = requestData.btnPerm.join();  // 数组转字符串，默认以，号隔开

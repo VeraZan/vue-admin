@@ -17,7 +17,10 @@ export  function loadData() {
       let responseData = response.data.data.data;
       if(responseData && responseData.length !== 0){
         tableData.item = responseData;
-        tableData.total = response.data.data.total;
+        tableData.total = response.data.data.total;      
+      }else{
+        tableData.item = [];
+        tableData.total = 0;
       }
     }).catch(error => {
 
