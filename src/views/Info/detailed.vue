@@ -27,7 +27,7 @@
   import UploadImg from "@c/UploadImg";
   import { GetList,EditInfo } from "@/api/news";
   import { timestampToTime } from "@/utils/common";
-  import { reactive,onMounted } from "@vue/composition-api";
+  import { reactive,onMounted, onActivated } from "@vue/composition-api";
   import 'quill/dist/quill.core.css';
   import 'quill/dist/quill.snow.css';
   import 'quill/dist/quill.bubble.css';
@@ -117,9 +117,12 @@
         })
       };
 
-
       onMounted(()=>{
         getInfoCategory();
+      });
+      //页面被keep-alive缓存后每次进入需要重新更新的数据和请求的方法在onActivated中执行
+      onActivated(()=>{
+        data.id = root.$route.params.id;
         getInfo();
       });
       return{
