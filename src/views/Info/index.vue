@@ -55,7 +55,7 @@
         <el-button type="danger" size="medium" @click="getList" style="width: 100%">搜索</el-button>
       </el-col>
       <el-col :span="2" :offset="2">
-        <el-button type="danger" size="medium" class="pull-right" style="width: 100%" @click="addItem">新增</el-button>
+        <el-button type="danger" size="medium" class="pull-right" style="width: 100%" @click="addItem" v-btnPerm="'info:add'">新增</el-button>
       </el-col>
     </el-row>
     <!--表格-->
@@ -68,9 +68,9 @@
       <el-table-column prop="user" label="管理员" width="115"></el-table-column>
       <el-table-column label="操作" fixed="right" width="250">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" @click="deleteItem(scope.row.id)">删除</el-button>
-          <el-button type="success" size="mini" @click="editItem(scope.row.id)">编辑</el-button>
-          <el-button type="warning" size="mini" @click="editDetail(scope.row.id)">编辑详情</el-button>
+          <el-button type="danger" size="mini" @click="deleteItem(scope.row.id)" v-btnPerm="'info:del'">删除</el-button>
+          <el-button type="success" size="mini" @click="editItem(scope.row.id)" v-btnPerm="'info:edit'">编辑</el-button>
+          <el-button type="warning" size="mini" @click="editDetail(scope.row.id)" v-btnPerm="'info:detailed'">编辑详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -78,7 +78,7 @@
     <div class="black-space-30"></div>
     <el-row>
       <el-col :span="12">
-        <el-button size="medium" @click="deleteAll">批量删除</el-button>
+        <el-button size="medium" @click="deleteAll" v-btnPerm="'info:batchDel'">批量删除</el-button>
       </el-col>
       <el-col :span="12">
         <el-pagination

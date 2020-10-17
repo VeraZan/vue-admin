@@ -1,3 +1,4 @@
+// 菜单样式
 .el-submenu .el-menu-item{
   font-size: 14px;
   padding-left: 50px !important;
@@ -80,4 +81,8 @@ div.el-form-item { margin-bottom: 22px; }
   .el-form-item:last-child {
     margin-bottom: 0 !important;
   }
+}
+//栅格布局样式，内部没有元素时使用1px高度占位
+[class*=el-col-] {
+  min-height: 1px;
 }

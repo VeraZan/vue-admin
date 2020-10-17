@@ -13,14 +13,14 @@
                 <el-input v-model="data.key_word" placeholder="请输入搜索的关键字"></el-input>
               </el-col>
               <el-col :span="7">
-                <el-button type="danger" @click="search" size="medium">搜索</el-button>
+                <el-button type="danger" @click="search" size="medium" v-btnPerm="'user:search'">搜索</el-button>
               </el-col>
             </el-row>
           </div>
         </div>
       </el-col>
       <el-col :span="4">
-        <el-button type="danger" class="pull-right"  size="medium" @click="handlerAdd">添加用户</el-button>
+        <el-button type="danger" class="pull-right"  size="medium" @click="handlerAdd" v-btnPerm="'user:add'">添加用户</el-button>
       </el-col>
     </el-row>
     <div class="black-space-30"></div>
@@ -36,11 +36,11 @@
         </el-switch> 
       </template>
       <template v-slot:operation="slotData">
-        <el-button type="danger" size="mini" @click="handlerDel(slotData.rowData)">删除</el-button>
-        <el-button type="success" size="mini" @click="handlerEdit(slotData.rowData)">编辑</el-button>
+        <el-button type="danger" size="mini" @click="handlerDel(slotData.rowData)" v-btnPerm="'user:del'">删除</el-button>
+        <el-button type="success" size="mini" @click="handlerEdit(slotData.rowData)" v-btnPerm="'user:edit'">编辑</el-button>
       </template>
       <template v-slot:tableFooterLeft>
-        <el-button size="small" @click="handlerBatchDel()">批量删除</el-button>
+        <el-button size="small" @click="handlerBatchDel()" v-btnPerm="'user:batchDel'">批量删除</el-button>
       </template>
     </TableVue>
     <DialogUser :flag.sync="data.dialog_show" :editData="data.editData" @refreshTabelData="refreshData"/>

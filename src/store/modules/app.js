@@ -3,6 +3,7 @@ import { setToKen,removeToKen,setUserName,getUserName,removeUserName } from '@/u
 
 const state = {
   roles: [],
+  buttonPermission: [],
   isCollapse:JSON.parse(sessionStorage.getItem('isCollapse')) || false,
   to_ken:"",
   username:getUserName() || ""
@@ -10,6 +11,7 @@ const state = {
 const getters = {
   isCollapse:state => state.isCollapse,
   roles: state => state.roles,
+  buttonPermission: state => state.buttonPermission
 };
 const mutations = {
   SET_COLLAPSE(state){
@@ -25,6 +27,9 @@ const mutations = {
   SET_ROLES(state,value){
     state.roles = value;
   },
+  SET_BUTTON(state, value){
+    state.buttonPermission = value;
+  }
 };
 const actions = {
   login(content,requestData){

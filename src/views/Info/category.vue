@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="danger" @click="changeCategoryFormStatus({type:'category_first_add'})">添加一级分类</el-button>
+    <el-button type="danger" @click="changeCategoryFormStatus({type:'category_first_add'})" v-btnPerm="'info:firstCategoryAdd'">添加一级分类</el-button>
     <hr class="hr-e9e9e9" />
     <div>
       <el-row :gutter="30">

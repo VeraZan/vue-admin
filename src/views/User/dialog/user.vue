@@ -164,7 +164,7 @@ export default {
       } else {
         // 添加
         data.form.id && delete data.form.id;
-        resetForm();
+        //resetForm();
         data.form.role = [];
         data.form.btnPerm = [];
       }
