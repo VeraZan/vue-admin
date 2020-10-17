@@ -1,6 +1,6 @@
 <template>
   <div>
-    test
+    控制台
   </div>
 </template>
 
