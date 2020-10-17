@@ -1,6 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+// 解决Vue-Router升级导致的Uncaught(in promise) navigation guard问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.use(VueRouter);
 
 //引入布局组件
@@ -46,6 +53,26 @@ export const defaultRouterMap  = [
         component: ()=>import("../views/Console/index.vue")
       }
     ]
+  },
+  {    
+    path: "/page404",
+    name: "page404",    
+    meta:{
+      name:"page404"
+    },
+    hidden:true,
+    component: Layout,
+    children:[
+      {
+        path: "/404",
+        name: "404",
+        meta:{
+          name:"404"
+        },
+        hidden:false,
+        component: ()=>import("../views/404/index.vue")
+      }
+    ]        
   }
 ];
 
@@ -84,6 +111,7 @@ export const asnycRouterMap = [
         path: "/infoCategory",
         name: "InfoCategory",
         meta:{
+          keepAlive:true,
           role: ['sale'],
           name:"信息分类"
         },
@@ -94,6 +122,7 @@ export const asnycRouterMap = [
         path: "/infoDetailed/:id",
         name: "infoDetailed",
         meta:{
+          keepAlive:true,
           role: ['sale'],
           name:"信息详情"
         },
@@ -124,5 +153,10 @@ export const asnycRouterMap = [
         component: ()=>import("../views/User/index.vue")
       }
     ]
+  },
+  {
+    path:"*",
+    redirect:"404",
+    hidden:true
   }
 ];

@@ -53,7 +53,8 @@ const actions = {
             }
             return item;
           }
-        })
+        });
+        addRouters.push(asnycRouterMap[asnycRouterMap.length - 1]);//404
       }
       // 更新路由
       commit('SET_ROUTER', addRouters);
