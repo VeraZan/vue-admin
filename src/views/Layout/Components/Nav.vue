@@ -2,7 +2,7 @@
   <div id="nav-wrap">
     <h1 class="logo"><img src="../../../assets/logo.png" alt=""></h1>
     <el-menu
-      default-active="1-4-1"
+      :default-active="$route.path"
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
       background-color="transparent"
@@ -11,13 +11,13 @@
       unique-opened
       router
     >
-      <template v-for="(item,index) in routers">
+      <template v-for="item in routers">
         <el-submenu v-if="!item.hidden" :key="item.id" :index="item.path">
           <template slot="title">
             <svg-icon :iconClass="item.meta.icon" :className="item.meta.icon" />
             <span slot="title">{{ item.meta.name }}</span>
           </template>
-          <template v-for="(subItem,subIndex) in item.children">
+          <template v-for="subItem in item.children">
             <el-menu-item v-if="!subItem.hidden" :key="subItem.id" :index="subItem.path">
               {{ subItem.meta.name }}
             </el-menu-item>

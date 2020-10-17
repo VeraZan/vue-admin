@@ -2,7 +2,13 @@
   <div id="main-wrap">
     <div class="main-content">
       <div class="content">
-        <router-view></router-view>
+        <keep-alive>
+          <!-- 需要缓存 -->
+          <!-- default-active设置默认路由为每次路由导航（跳转）的路由 -->
+          <router-view v-if="$route.meta.keepAlive" :default-active="$route.path"></router-view>
+        </keep-alive>
+          <!-- 不需要缓存 -->
+        <router-view v-if="!$route.meta.keepAlive" :default-active="$route.path"></router-view>
       </div>
     </div>
   </div>

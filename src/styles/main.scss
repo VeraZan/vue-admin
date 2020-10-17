@@ -1,12 +1,16 @@
 @import "./normalize.scss";
 @import "./config.scss";
 @import "./elementui.scss";
+@import "./quill.scss";
 
 .pull-left {
   float: left;
 }
 .pull-right {
   float: right;
+}
+.overflow-h{
+  overflow:hidden
 }
 .black-space-30 {
   height: 30px;

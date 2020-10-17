@@ -2,7 +2,7 @@
   <div id="login">
     <div class="login-wrap">
       <ul class="menu-tab">
-        <li v-for="(val,index) in menuTab" :key="index" :class="{'current':isActive === index}" @click="toggleMenu(index)">{{val}}</li>
+        <li v-for="(val,index) in menuTab.desc" :key="index" :class="{'current':isActive === index}" @click="toggleMenu(index)">{{val}}</li>
       </ul>
       <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" class="login-form" size="medium">
         <el-form-item prop="username" class="item-form"><!--此处el-form-item直接用label属性设置label的话，label在<style scoped>中的样式修改可能不生效-->
@@ -41,7 +41,7 @@
 <script>
   import sha1 from 'js-sha1';
   import { GetSms,Register,Login } from '@/api/login'
-  import { reactive,ref,onMounted } from '@vue/composition-api'
+  import { reactive,ref,onMounted, onUnmounted } from '@vue/composition-api'
   //打开vue.config.js，@代指什么看configureWebpack alias，不用写.js后缀看configureWebpack extensions
   import { stripscript,validateEmail,validatePwd,validateVCode } from '@/utils/validate'
 
@@ -125,7 +125,9 @@
       //这里放置data数据，生命周期，自定义的函数
 
       /************************数据******************************/
-      const menuTab=reactive(['登录', '注册']);
+      const menuTab=reactive({
+        desc: ['登录', '注册']
+      });
       const isActive=ref(0);
       const loginBtnStatus = ref(true);
       const codeBtn = reactive({
@@ -199,7 +201,11 @@
           loginBtnStatus.value = false;
           countDown(60);
         }).catch(error => {//Promise.reject的内容来到这里
-
+          loginBtnStatus.value = true;
+          updateBtnStatus({
+            status:false,
+            text:"重新获取"
+          });
         })
       });
       //提交表单
@@ -273,9 +279,9 @@
         clearInterval(timer.value);
       });
       /************************生命周期******************************/
-      //挂载完成后
-      onMounted(()=>{
-
+      //销毁页面
+      onUnmounted(()=>{
+        clearInterval(timer.value);
       });
 
       //data数据：要return

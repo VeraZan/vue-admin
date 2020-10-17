@@ -1,12 +1,20 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+// 解决Vue-Router升级导致的Uncaught(in promise) navigation guard问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.use(VueRouter);
 
 //引入布局组件
 import Layout from '@/views/Layout'
 
-const routes = [
+//默认路由
+export const defaultRouterMap  = [
   {
     path: "/",
     meta:{
@@ -46,10 +54,43 @@ const routes = [
       }
     ]
   },
+  {    
+    path: "/page404",
+    name: "page404",    
+    meta:{
+      name:"page404"
+    },
+    hidden:true,
+    component: Layout,
+    children:[
+      {
+        path: "/404",
+        name: "404",
+        meta:{
+          name:"404"
+        },
+        hidden:false,
+        component: ()=>import("../views/404/index.vue")
+      }
+    ]        
+  }
+];
+
+const router = new VueRouter({
+  mode: 'hash',
+  scrollBehavior: () => ({ y: 0 }),//页面滚到顶部
+  routes: defaultRouterMap
+});
+
+export default router;
+
+//动态路由
+export const asnycRouterMap = [
   {
     path: "/info",
     name: "Info",
     meta:{
+      role: ['sale', 'manager'],
       name:"信息管理",
       icon:"info"
     },
@@ -60,6 +101,7 @@ const routes = [
         path: "/infoIndex",
         name: "InfoIndex",
         meta:{
+          role: ['sale', 'manager'],
           name:"信息列表"
         },
         hidden:false,
@@ -69,6 +111,8 @@ const routes = [
         path: "/infoCategory",
         name: "InfoCategory",
         meta:{
+          keepAlive:true,
+          role: ['sale'],
           name:"信息分类"
         },
         hidden:false,
@@ -78,6 +122,8 @@ const routes = [
         path: "/infoDetailed/:id",
         name: "infoDetailed",
         meta:{
+          keepAlive:true,
+          role: ['sale'],
           name:"信息详情"
         },
         hidden:true,
@@ -89,6 +135,7 @@ const routes = [
     path: "/user",
     name: "User",
     meta:{
+      role: ['sale'],
       name:"用户管理",
       icon:"user"
     },
@@ -99,17 +146,17 @@ const routes = [
         path: "/userIndex",
         name: "UserIndex",
         meta:{
+          role: ['sale'],
           name:"用户列表"
         },
         hidden:false,
         component: ()=>import("../views/User/index.vue")
       }
     ]
+  },
+  {
+    path:"*",
+    redirect:"404",
+    hidden:true
   }
 ];
-
-const router = new VueRouter({
-  routes
-});
-
-export default router;
