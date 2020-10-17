@@ -1,4 +1,4 @@
-import { Login } from '@/api/login';
+import { Login,LogOut } from '@/api/login';
 import { setToKen,removeToKen,setUserName,getUserName,removeUserName } from '@/utils/app';
 
 const state = {
@@ -46,15 +46,19 @@ const actions = {
       })
     })
   },
-  exit({ commit }){
+  logout({ commit }){
     return new Promise((resolve,reject) => {
-      removeToKen();
-      removeUserName();
-      commit("SET_TOKEN","");
-      commit("SET_USERNAME","");
-      commit("SET_ROLES","");
-      resolve();
-    });
+      LogOut().then(res => {
+        removeToKen();
+        removeUserName();
+        commit("SET_TOKEN","");
+        commit("SET_USERNAME","");
+        commit("SET_ROLES","");
+        resolve();
+      })
+    }).catch(error => {
+      reject()
+    })
   }
 };
 export default {

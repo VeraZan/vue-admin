@@ -27,6 +27,15 @@ export function Login(data) {
   })
 }
 
+//登出
+export function LogOut(data) {
+  return service.request({
+    method:"post",
+    url:"/logout/",
+    data
+  })
+}
+
 /**
  * 获取用户角色
  */

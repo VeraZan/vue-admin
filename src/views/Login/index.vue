@@ -41,7 +41,7 @@
 <script>
   import sha1 from 'js-sha1';
   import { GetSms,Register,Login } from '@/api/login'
-  import { reactive,ref,onMounted } from '@vue/composition-api'
+  import { reactive,ref,onMounted, onUnmounted } from '@vue/composition-api'
   //打开vue.config.js，@代指什么看configureWebpack alias，不用写.js后缀看configureWebpack extensions
   import { stripscript,validateEmail,validatePwd,validateVCode } from '@/utils/validate'
 
@@ -201,7 +201,11 @@
           loginBtnStatus.value = false;
           countDown(60);
         }).catch(error => {//Promise.reject的内容来到这里
-
+          loginBtnStatus.value = true;
+          updateBtnStatus({
+            status:false,
+            text:"重新获取"
+          });
         })
       });
       //提交表单
@@ -275,9 +279,9 @@
         clearInterval(timer.value);
       });
       /************************生命周期******************************/
-      //挂载完成后
-      onMounted(()=>{
-
+      //销毁页面
+      onUnmounted(()=>{
+        clearInterval(timer.value);
       });
 
       //data数据：要return
