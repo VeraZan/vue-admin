@@ -72,7 +72,7 @@ module.exports = {
     hotOnly: false,
     proxy: {// 设置代理
       '/devApi':{
-        target:"http://www.web-jshtml.cn/productapi/token",
+        target:"http://www.web-jshtml.cn/vue_admin_api/token",
         changeOrigin:true,
         pathRewrite:{
           '^/devApi':''
